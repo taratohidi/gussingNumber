@@ -12,9 +12,12 @@ const body = document.querySelector('body');
 
 // Define Random Number
 let numberRandom = Math.trunc(Math.random() * 30) + 1;
-
 let scoreInit = 20;
 let highscoreInit = 0;
+
+const displyMessage = function (newMessage) {
+  message.textContent = newMessage;
+};
 
 //Implement the game logic and score
 check.addEventListener('click', event => {
@@ -22,15 +25,15 @@ check.addEventListener('click', event => {
 
   // When there is no input
   if (!guessValue) {
-    message.textContent = 'No Number 🚫';
+    displyMessage('No Number 🚫');
 
     // When the input is not between 1 and 30
   } else if (guessValue === 0 || guessValue > 30) {
-    message.textContent = 'Between 1 and 30 🚫';
+    displyMessage('Between 1 and 30 🚫');
 
     // When player wins
   } else if (guessValue === numberRandom) {
-    message.textContent = 'Correct Number! 🎊';
+    displyMessage('Correct Number! 🎊');
     number.textContent = numberRandom;
     body.style.backgroundColor = '#5996c6';
 
@@ -40,24 +43,14 @@ check.addEventListener('click', event => {
       highScore.textContent = highscoreInit;
     }
 
-    // When guess is higher
-  } else if (guessValue > numberRandom) {
+    // When guess is higher or lower
+  } else if (guessValue !== numberRandom) {
     if (scoreInit >= 1) {
-      message.textContent = 'Less! ⬇️';
+      displyMessage(guessValue > numberRandom ? 'Less! ⬇️' : 'More! ⬆️');
       scoreInit--;
       score.textContent = scoreInit;
     } else {
-      message.textContent = 'You lost the game';
-    }
-
-    // When guess is lower
-  } else if (guessValue < numberRandom) {
-    if (scoreInit >= 1) {
-      message.textContent = 'More! ⬆️';
-      scoreInit--;
-      score.textContent = scoreInit;
-    } else {
-      message.textContent = 'You lost the game';
+      displyMessage('You lost the game');
     }
   }
 });
@@ -68,7 +61,7 @@ again.addEventListener('click', event => {
   score.textContent = 20;
   scoreInit = 20;
 
-  message.textContent = 'Start guessing...';
+  displyMessage('Start guessing...');
   number.textContent = '?';
   body.style.backgroundColor = '#1e3e57';
   guess.value = '';
