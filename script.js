@@ -7,12 +7,14 @@ const guess = document.querySelector('.guess');
 const message = document.querySelector('.message');
 const number = document.querySelector('.number');
 const score = document.querySelector('.score');
+const highScore = document.querySelector('.highscore');
 const body = document.querySelector('body');
 
 // Define Random Number
 let numberRandom = Math.trunc(Math.random() * 30) + 1;
 
 let scoreInit = 20;
+let highscoreInit = 0;
 
 //Implement the game logic and score
 check.addEventListener('click', event => {
@@ -30,15 +32,20 @@ check.addEventListener('click', event => {
   } else if (guessValue === numberRandom) {
     message.textContent = 'Correct Number! 🎊';
     number.textContent = numberRandom;
-
     body.style.backgroundColor = '#5996c6';
+
+    // Implement HighScore
+    if (scoreInit > highscoreInit) {
+      highscoreInit = scoreInit;
+      highScore.textContent = highscoreInit;
+    }
 
     // When guess is higher
   } else if (guessValue > numberRandom) {
     if (scoreInit >= 1) {
-      score.textContent = scoreInit;
       message.textContent = 'Less! ⬇️';
       scoreInit--;
+      score.textContent = scoreInit;
     } else {
       message.textContent = 'You lost the game';
     }
@@ -46,9 +53,9 @@ check.addEventListener('click', event => {
     // When guess is lower
   } else if (guessValue < numberRandom) {
     if (scoreInit >= 1) {
-      score.textContent = scoreInit;
       message.textContent = 'More! ⬆️';
       scoreInit--;
+      score.textContent = scoreInit;
     } else {
       message.textContent = 'You lost the game';
     }
@@ -57,8 +64,9 @@ check.addEventListener('click', event => {
 
 //Functionality of again button
 again.addEventListener('click', event => {
+  numberRandom = Math.trunc(Math.random() * 30) + 1;
   score.textContent = 20;
-  let scoreInit = 20;
+  scoreInit = 20;
 
   message.textContent = 'Start guessing...';
   number.textContent = '?';
